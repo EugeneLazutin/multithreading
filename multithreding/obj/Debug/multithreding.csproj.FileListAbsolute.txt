@@ -1,0 +1,6 @@
+D:\itechart\multithreding\multithreding\bin\Debug\multithreding.exe.config
+D:\itechart\multithreding\multithreding\bin\Debug\multithreding.exe
+D:\itechart\multithreding\multithreding\bin\Debug\multithreding.pdb
+D:\itechart\multithreding\multithreding\obj\Debug\multithreding.csprojResolveAssemblyReference.cache
+D:\itechart\multithreding\multithreding\obj\Debug\multithreding.exe
+D:\itechart\multithreding\multithreding\obj\Debug\multithreding.pdb
