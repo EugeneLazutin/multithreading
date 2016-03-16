@@ -1,27 +1,19 @@
 ﻿using System;
 using System.Threading;
 
-namespace multithreding
+namespace multithreding.Components.Multithreaded
 {
-    class ItemListMutex : ItemList, IItemList
+    class ItemListMutex : ItemListMultithreaded
     {
 
         private readonly Mutex _mutex = new Mutex();
-        public void Read(int limit)
-        {
-            NextIndex = 0;
-            for (var i = 0; i < limit; i++)
-            {
-                new Thread(ReadThred).Start();
-            }
-        }
 
-        private void WriteThread()
+        protected override void WriteThread()
         {
             while (true)
             {
                 _mutex.WaitOne();
-                if (Id >= 1000)
+                if (Id >= MaxCount)
                 {
                     _mutex.ReleaseMutex();
                     break;
@@ -31,20 +23,12 @@ namespace multithreding
             }
         }
 
-        public void Write(int limit)
-        {
-            for (var i = 0; i < limit; i++)
-            {
-                new Thread(WriteThread).Start();
-            }
-        }
-
-        private void ReadThred()
+        protected override void ReadThread()
         {
             do
             {
                 _mutex.WaitOne();
-                var item = GetNext();
+                var item = GetNextUnreaded();
                 _mutex.ReleaseMutex();
                 if (item == null)
                 {

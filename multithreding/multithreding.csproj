@@ -43,19 +43,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IItemList.cs" />
-    <Compile Include="Item.cs" />
-    <Compile Include="ItemClassLock.cs" />
-    <Compile Include="ItemList.cs" />
-    <Compile Include="ItemListMutex.cs" />
-    <Compile Include="ItemListReaderWriterLock.cs" />
-    <Compile Include="ItemListResetEvent.cs" />
+    <Compile Include="Interfaces\IItemList.cs" />
+    <Compile Include="Components\Item.cs" />
+    <Compile Include="Components\Multithreaded\ItemListLock.cs" />
+    <Compile Include="Components\ItemList.cs" />
+    <Compile Include="Components\Multithreaded\ItemListMutex.cs" />
+    <Compile Include="Components\Multithreaded\ItemListReaderWriterLock.cs" />
+    <Compile Include="Components\Multithreaded\ItemListResetEvent.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Components\Multithreaded\ItemListMultithreaded.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="App.config" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

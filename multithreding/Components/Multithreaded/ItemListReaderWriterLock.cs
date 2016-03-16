@@ -1,26 +1,18 @@
 ﻿using System;
 using System.Threading;
 
-namespace multithreding
+namespace multithreding.Components.Multithreaded
 {
-    class ItemListReaderWriterLock : ItemList, IItemList
+    class ItemListReaderWriterLock : ItemListMultithreaded
     {
         private readonly ReaderWriterLockSlim _rwl = new ReaderWriterLockSlim(LockRecursionPolicy.NoRecursion);
 
-        public void Write(int limit)
-        {
-            for (var i = 0; i < limit; i++)
-            {
-                new Thread(WriteThread).Start();
-            }
-        }
-
-        private void WriteThread()
+        protected override void WriteThread()
         {
             while (true)
             {
                 _rwl.EnterWriteLock();
-                if (Id >= 1000)
+                if (Id >= MaxCount)
                 {
                     _rwl.ExitWriteLock();
                     break;
@@ -30,21 +22,12 @@ namespace multithreding
             }
         }
 
-        public void Read(int limit)
-        {
-            NextIndex = 0;
-            for (var i = 0; i < limit; i++)
-            {
-                new Thread(ReadThread).Start();
-            }
-        }
-
-        private void ReadThread()
+        protected override void ReadThread()
         {
             do
             {
                 _rwl.EnterReadLock();
-                var item = GetNext();
+                var item = GetNextUnreaded();
                 _rwl.ExitReadLock();
                 if (item == null)
                 {

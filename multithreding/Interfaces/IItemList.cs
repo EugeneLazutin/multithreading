@@ -1,4 +1,4 @@
-﻿namespace multithreding
+﻿namespace multithreding.Interfaces
 {
     interface IItemList
     {

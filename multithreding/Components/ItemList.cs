@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace multithreding
+namespace multithreding.Components
 {
     public class ItemList
     {
+        protected const int MaxCount = 1000;
+        protected int NextUnreadedIndex;
+        protected int Id;
+        protected List<Item> List;
+
         public ItemList()
         {
             List = new List<Item>();
@@ -16,13 +21,13 @@ namespace multithreding
             List.Add(item);
         }
 
-        public Item GetNext()
+        public Item GetNextUnreaded()
         {
-            if (NextIndex >= List.Count || NextIndex < 0)
+            if (NextUnreadedIndex >= List.Count || NextUnreadedIndex < 0)
             {
                 return null;
             }
-            return List[NextIndex++];
+            return List[NextUnreadedIndex++];
         }
 
         public void Show()
@@ -32,11 +37,7 @@ namespace multithreding
 
         public void Reset()
         {
-            NextIndex = 0;
+            NextUnreadedIndex = 0;
         }
-
-        protected int NextIndex ;
-        protected int Id;
-        protected List<Item> List;
     }
 }

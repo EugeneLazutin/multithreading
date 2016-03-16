@@ -1,27 +1,19 @@
 ﻿using System;
 using System.Threading;
 
-namespace multithreding
+namespace multithreding.Components.Multithreaded
 {
-    class ItemListLock : ItemList, IItemList
+    class ItemListLock : ItemListMultithreaded
     {
-        private object _lock = new object();
-        public void Read(int limit)
-        {
-            NextIndex = 0;
-            for (var i = 0; i < limit; i++)
-            {
-                new Thread(ReadThred).Start();
-            }
-        }
+        private readonly object _lock = new object();
 
-        private void WriteThread()
+        protected override void WriteThread()
         {
             while (true)
             {
                 lock (_lock)
                 {
-                    if (Id >= 1000)
+                    if (Id >= MaxCount)
                     {
                         break;
                     }
@@ -30,22 +22,14 @@ namespace multithreding
             }
         }
 
-        public void Write(int limit)
-        {
-            for (var i = 0; i < limit; i++)
-            {
-                new Thread(WriteThread).Start();
-            }
-        }
-
-        private void ReadThred()
+        protected override void ReadThread()
         {
             do
             {
                 Item item;
                 lock (_lock)
                 {
-                    item = GetNext();
+                    item = GetNextUnreaded();
                 }
                 if (item == null)
                 {

@@ -1,50 +1,33 @@
 ﻿using System;
 using System.Threading;
 
-namespace multithreding
+namespace multithreding.Components.Multithreaded
 {
-    class ItemListResetEvent : ItemList, IItemList
+    class ItemListResetEvent : ItemListMultithreaded
     {
         private readonly AutoResetEvent _are = new AutoResetEvent(true);
 
-        public void Write(int limit)
-        {
-            for (var i = 0; i < limit; i++)
-            {
-                new Thread(WriteThread).Start();
-            }
-        }
-
-        private void WriteThread()
+        protected override void WriteThread()
         {
             while (true)
             {
                 _are.WaitOne();
-                if (Id >= 1000)
+                if (Id >= MaxCount)
                 {
                     _are.Set();
                     break;
                 }
-                Add(new Item {Name = "Name"});
+                Add(new Item { Name = "Name" });
                 _are.Set();
             }
         }
 
-        public void Read(int limit)
-        {
-            NextIndex = 0;
-            for (var i = 0; i < limit; i++)
-            {
-                new Thread(ReadThread).Start();
-            }
-        }
-
-        private void ReadThread()
+        protected override void ReadThread()
         {
             do
             {
                 _are.WaitOne();
-                var item = GetNext();
+                var item = GetNextUnreaded();
                 _are.Set();
                 if (item == null)
                 {

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using multithreding.Components.Multithreaded;
+using multithreding.Interfaces;
 
 namespace multithreding
 {
@@ -8,6 +10,9 @@ namespace multithreding
 
         static void Main()
         {
+            const int writeLimit = 2;
+            const int readLimit = 3;
+
             var list = new List<IItemList>
             {
                 new ItemListResetEvent(),
@@ -15,9 +20,6 @@ namespace multithreding
                 new ItemListMutex(),
                 new ItemListLock()
             };
-
-            int writeLimit = 2;
-            int readLimit = 3;
 
             foreach (var item in list)
             {
